@@ -1,13 +1,13 @@
-import 'package:back_stock/manegement/data/data_deposito_constant.dart';
-import 'package:back_stock/manegement/data/data_inventario_constant.dart';
-import 'package:back_stock/manegement/data/data_produto_constant.dart';
-import 'package:back_stock/manegement/data/data_qntd_constant.dart';
-import 'package:back_stock/manegement/data/data_transferir_constant.dart';
-import 'package:back_stock/manegement/data/data_usuario_constant.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../core/data/data_general_constants.dart';
+import 'package:backend/core/data/data_general_constants.dart';
+import 'package:backend/manegement/data/data_deposito_constant.dart';
+import 'package:backend/manegement/data/data_inventario_constant.dart';
+import 'package:backend/manegement/data/data_produto_constant.dart';
+import 'package:backend/manegement/data/data_qntd_constant.dart';
+import 'package:backend/manegement/data/data_transferir_constant.dart';
+import 'package:backend/manegement/data/data_usuario_constant.dart';
 
 class Manegementesqflitesource {
   Future<Database> _getDatabase() async {

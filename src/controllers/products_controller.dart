@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:shelf/shelf.dart';
 
-import '../data/fake_data.dart';
 import '../dto/produtc_dto.dart';
 import '../models/product_model.dart';
 import '../services/produtcs_service.dart';
