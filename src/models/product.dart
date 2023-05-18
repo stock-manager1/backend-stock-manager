@@ -6,6 +6,7 @@ class Product {
   final String name;
   final String brand;
   final String type;
+  
   Product({
     this.id = 0,
     this.name = '',

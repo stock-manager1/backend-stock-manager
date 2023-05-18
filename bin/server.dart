@@ -4,20 +4,18 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-import '../src/controllers/products_controller.dart';
-import '../src/services/produtcs_service.dart';
+import '../src/controllers/user_controller.dart';
+import '../src/services/user_service.dart';
+
 
 // Configure routes.
 final _router = Router();
 
 void main(List<String> args) async {
-  final ProductsService productsService = ProductsService();
-  final ProdutcsController produtcsController =
-      ProdutcsController(productsService);
+  UserService userService = UserService();
+  UserController userController = UserController(userService);
 
-  _router.get('/products', produtcsController.getAll);
-  _router.get('/products/<id>', produtcsController.getById);
-  _router.post('/products', produtcsController.create);
+  _router.get('/users', userController.getAllUsers);
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = "localhost";
 

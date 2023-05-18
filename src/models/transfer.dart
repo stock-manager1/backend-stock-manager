@@ -2,16 +2,17 @@
 import 'dart:convert';
 
 import './user.dart';
-import 'depository.dart';
+import 'deposit.dart';
 import 'product.dart';
 
 class Transfer {
   final User idUser;
   final Product idProduct;
-  final Depository idOriginDepository;
-  final Depository idDestinationDepository;
+  final Deposit idOriginDepository;
+  final Deposit idDestinationDepository;
   final int qntItemsTransferred;
   final DateTime transferDate;
+  
   Transfer({
     required this.idUser,
     required this.idProduct,
@@ -24,8 +25,8 @@ class Transfer {
   Transfer copyWith({
     User? idUser,
     Product? idProduct,
-    Depository? idOriginDepository,
-    Depository? idDestinationDepository,
+    Deposit? idOriginDepository,
+    Deposit? idDestinationDepository,
     int? qntItemsTransferred,
     DateTime? transferDate,
   }) {
@@ -56,8 +57,8 @@ class Transfer {
       idUser: User.fromMap(map['idUser'] as Map<String, dynamic>),
       idProduct: Product.fromMap(map['idProduct'] as Map<String, dynamic>),
       idOriginDepository:
-          Depository.fromMap(map['idOriginDepository'] as Map<String, dynamic>),
-      idDestinationDepository: Depository.fromMap(
+          Deposit.fromMap(map['idOriginDepository'] as Map<String, dynamic>),
+      idDestinationDepository: Deposit.fromMap(
           map['idDestinationDepository'] as Map<String, dynamic>),
       qntItemsTransferred: (map['qntItemsTransferred'] ?? 0) as int,
       transferDate: DateTime.fromMillisecondsSinceEpoch(
