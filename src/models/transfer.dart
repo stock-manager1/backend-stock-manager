@@ -1,27 +1,31 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import './user.dart';
+import 'depository.dart';
+import 'product.dart';
+
 class Transfer {
-  final int idUser;
-  final int idProduct;
-  final int idOriginDepository;
-  final int idDestinationDepository;
+  final User idUser;
+  final Product idProduct;
+  final Depository idOriginDepository;
+  final Depository idDestinationDepository;
   final int qntItemsTransferred;
   final DateTime transferDate;
   Transfer({
-    this.idUser = 0,
-    this.idProduct = 0,
-    this.idOriginDepository = 0,
-    this.idDestinationDepository = 0,
+    required this.idUser,
+    required this.idProduct,
+    required this.idOriginDepository,
+    required this.idDestinationDepository,
     this.qntItemsTransferred = 0,
     required this.transferDate,
   });
 
   Transfer copyWith({
-    int? idUser,
-    int? idProduct,
-    int? idOriginDepository,
-    int? idDestinationDepository,
+    User? idUser,
+    Product? idProduct,
+    Depository? idOriginDepository,
+    Depository? idDestinationDepository,
     int? qntItemsTransferred,
     DateTime? transferDate,
   }) {
@@ -38,10 +42,10 @@ class Transfer {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'idUser': idUser,
-      'idProduct': idProduct,
-      'idOriginDepository': idOriginDepository,
-      'idDestinationDepository': idDestinationDepository,
+      'idUser': idUser.toMap(),
+      'idProduct': idProduct.toMap(),
+      'idOriginDepository': idOriginDepository.toMap(),
+      'idDestinationDepository': idDestinationDepository.toMap(),
       'qntItemsTransferred': qntItemsTransferred,
       'transferDate': transferDate.millisecondsSinceEpoch,
     };
@@ -49,10 +53,12 @@ class Transfer {
 
   factory Transfer.fromMap(Map<String, dynamic> map) {
     return Transfer(
-      idUser: (map['idUser'] ?? 0) as int,
-      idProduct: (map['idProduct'] ?? 0) as int,
-      idOriginDepository: (map['idOriginDepository'] ?? 0) as int,
-      idDestinationDepository: (map['idDestinationDepository'] ?? 0) as int,
+      idUser: User.fromMap(map['idUser'] as Map<String, dynamic>),
+      idProduct: Product.fromMap(map['idProduct'] as Map<String, dynamic>),
+      idOriginDepository:
+          Depository.fromMap(map['idOriginDepository'] as Map<String, dynamic>),
+      idDestinationDepository: Depository.fromMap(
+          map['idDestinationDepository'] as Map<String, dynamic>),
       qntItemsTransferred: (map['qntItemsTransferred'] ?? 0) as int,
       transferDate: DateTime.fromMillisecondsSinceEpoch(
           (map['transferDate'] ?? 0) as int),

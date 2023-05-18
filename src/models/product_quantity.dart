@@ -1,19 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'depository.dart';
+import 'product.dart';
+
 class ProductQuantity {
-  final int idDepository;
-  final int idProduct;
+  final Depository idDepository;
+  final Product idProduct;
   final int qntProduct;
   ProductQuantity({
-    this.idDepository = 0,
-    this.idProduct = 0,
+    required this.idDepository,
+    required this.idProduct,
     this.qntProduct = 0,
   });
 
   ProductQuantity copyWith({
-    int? idDepository,
-    int? idProduct,
+    Depository? idDepository,
+    Product? idProduct,
     int? qntProduct,
   }) {
     return ProductQuantity(
@@ -25,16 +28,17 @@ class ProductQuantity {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'idDepository': idDepository,
-      'idProduct': idProduct,
+      'idDepository': idDepository.toMap(),
+      'idProduct': idProduct.toMap(),
       'qntProduct': qntProduct,
     };
   }
 
   factory ProductQuantity.fromMap(Map<String, dynamic> map) {
     return ProductQuantity(
-      idDepository: (map['idDepository'] ?? 0) as int,
-      idProduct: (map['idProduct'] ?? 0) as int,
+      idDepository:
+          Depository.fromMap(map['idDepository'] as Map<String, dynamic>),
+      idProduct: Product.fromMap(map['idProduct'] as Map<String, dynamic>),
       qntProduct: (map['qntProduct'] ?? 0) as int,
     );
   }
