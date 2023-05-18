@@ -10,7 +10,6 @@ dependencies:
   args: ^2.3.0
   shelf: ^1.4.0
   shelf_router: ^1.1.0
-  hive_flutter: ^1.1.0
   path: ^1.8.3
   sqflite: ^2.0.0+3
 

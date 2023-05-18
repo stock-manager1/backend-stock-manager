@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 
 import '../dto/produtc_dto.dart';
-import '../models/product_model.dart';
+import '../models/product.dart';
 import '../services/produtcs_service.dart';
 
 class ProdutcsController {
@@ -14,7 +14,7 @@ class ProdutcsController {
 
   FutureOr<Response> getAll(Request request) async {
     try {
-      final List<ProductModel> all = await _productsService.findAll();
+      final List<Product> all = await _productsService.findAll();
       return Response.ok(
           jsonEncode({
             'products': all.map((product) => product.toMap()).toList(),
@@ -29,7 +29,7 @@ class ProdutcsController {
   FutureOr<Response> getById(Request request, String id) async {
     final int produtctId = int.parse(id);
     try {
-      final ProductModel product = await _productsService.findById(produtctId);
+      final Product product = await _productsService.findById(produtctId);
       return Response.ok(
           jsonEncode({
             'product': product.toMap(),
@@ -47,8 +47,7 @@ class ProdutcsController {
     final ProductDTO newProductDTO = ProductDTO.fromMap(productData);
 
     try {
-      final ProductModel newProduct =
-          await _productsService.create(newProductDTO);
+      final Product newProduct = await _productsService.create(newProductDTO);
       return Response(201,
           body: jsonEncode({
             'product': newProduct.toMap(),
