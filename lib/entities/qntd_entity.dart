@@ -1,4 +1,3 @@
-// ignore: file_names
 class QntdProduto {
   final int idProduto;
   final int qntdInventario;
