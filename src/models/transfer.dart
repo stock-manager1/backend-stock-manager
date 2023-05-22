@@ -6,7 +6,7 @@ import 'deposit.dart';
 import 'product.dart';
 
 class Transfer {
-  final Users idUser;
+  final User idUser;
   final Product idProduct;
   final Deposit idOriginDepository;
   final Deposit idDestinationDepository;
@@ -23,7 +23,7 @@ class Transfer {
   });
 
   Transfer copyWith({
-    Users? idUser,
+    User? idUser,
     Product? idProduct,
     Deposit? idOriginDepository,
     Deposit? idDestinationDepository,
@@ -54,7 +54,7 @@ class Transfer {
 
   factory Transfer.fromMap(Map<String, dynamic> map) {
     return Transfer(
-      idUser: Users.fromMap(map['idUser'] as Map<String, dynamic>),
+      idUser: User.fromMap(map['idUser'] as Map<String, dynamic>),
       idProduct: Product.fromMap(map['idProduct'] as Map<String, dynamic>),
       idOriginDepository:
           Deposit.fromMap(map['idOriginDepository'] as Map<String, dynamic>),

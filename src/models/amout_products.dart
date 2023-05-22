@@ -4,23 +4,23 @@ import 'dart:convert';
 import 'deposit.dart';
 import 'product.dart';
 
-class AmountProducts {
+class AmountProduct {
   final Deposit idDepository;
   final Product idProduct;
   final int qntProduct;
-  
-  AmountProducts({
+
+  AmountProduct({
     required this.idDepository,
     required this.idProduct,
     this.qntProduct = 0,
   });
 
-  AmountProducts copyWith({
+  AmountProduct copyWith({
     Deposit? idDepository,
     Product? idProduct,
     int? qntProduct,
   }) {
-    return AmountProducts(
+    return AmountProduct(
       idDepository: idDepository ?? this.idDepository,
       idProduct: idProduct ?? this.idProduct,
       qntProduct: qntProduct ?? this.qntProduct,
@@ -35,8 +35,8 @@ class AmountProducts {
     };
   }
 
-  factory AmountProducts.fromMap(Map<String, dynamic> map) {
-    return AmountProducts(
+  factory AmountProduct.fromMap(Map<String, dynamic> map) {
+    return AmountProduct(
       idDepository:
           Deposit.fromMap(map['idDepository'] as Map<String, dynamic>),
       idProduct: Product.fromMap(map['idProduct'] as Map<String, dynamic>),
@@ -46,15 +46,15 @@ class AmountProducts {
 
   String toJson() => json.encode(toMap());
 
-  factory AmountProducts.fromJson(String source) =>
-      AmountProducts.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AmountProduct.fromJson(String source) =>
+      AmountProduct.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
       'ProductQuantity(idDepository: $idDepository, idProduct: $idProduct, qntProduct: $qntProduct)';
 
   @override
-  bool operator ==(covariant AmountProducts other) {
+  bool operator ==(covariant AmountProduct other) {
     if (identical(this, other)) return true;
 
     return other.idDepository == idDepository &&
