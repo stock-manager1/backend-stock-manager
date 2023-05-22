@@ -8,6 +8,7 @@ import '../services/user_service.dart';
 
 class UserController {
   UserService userService = UserService();
+  
   Future<Response> findById(Request req, String id) async {
     try {
       User user = await userService.find("id", id);
