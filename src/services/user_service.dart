@@ -3,6 +3,7 @@ import '../repositories/user_repository.dart';
 
 class UserService {
   UserRepository userRepository = UserRepository();
+  
   Future<User> find(String key, String value) async {
     User user = await userRepository.find(key, value);
     return user;

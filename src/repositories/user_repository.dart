@@ -13,11 +13,7 @@ class UserRepository {
         await conn.query('select * from users where $key = ?', [value]);
     User user = User();
     if (userFind.isNotEmpty) {
-      user = User(
-          id: userFind.first["id"],
-          email: userFind.first["email"].toString(),
-          name: userFind.first["name"].toString(),
-          password: userFind.first["password"].toString());
+      user = User.fromMap(userFind.first.fields);
     }
 
     conn.close();

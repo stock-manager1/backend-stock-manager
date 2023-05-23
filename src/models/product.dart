@@ -28,6 +28,14 @@ class Product {
     );
   }
 
+  bool isEmpty() {
+    if (name.isEmpty && brand.isEmpty && type.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -40,9 +48,9 @@ class Product {
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
       id: (map['id'] ?? 0) as int,
-      name: (map['name'] ?? '') as String,
-      brand: (map['brand'] ?? '') as String,
-      type: (map['type'] ?? '') as String,
+      name: (map['name'] ?? '').toString(),
+      brand: (map['brand'] ?? '').toString(),
+      type: (map['type'] ?? '').toString(),
     );
   }
 

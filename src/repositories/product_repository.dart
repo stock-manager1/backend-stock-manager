@@ -9,6 +9,7 @@ import '../models/product.dart';
 class ProductsRepository {
   Database db = Database();
 
+  //Registrar Produtos:
   Future<void> productRegister(Product product) async {
     MySqlConnection conn = await db.connectToDatabase();
 
@@ -36,4 +37,51 @@ class ProductsRepository {
       await conn.close();
     }
   }
+
+  // Listar Produto:
+  Future<List<Product>> listAllProducts() async {
+    MySqlConnection conn = await db.connectToDatabase();
+    Results products = await conn.query('select * from products');
+
+    List<Product> allProducts = List.empty(growable: true);
+
+    for (ResultRow result in products) {
+      Product product = Product.fromMap(result.fields);
+      allProducts.add(product);
+    }
+
+    conn.close();
+    return allProducts;
+  }
+
+  // Encontrar Produto:
+  Future<Product> productFind(String key, String value) async {
+    MySqlConnection conn = await db.connectToDatabase();
+    Results productFind =
+        await conn.query('select * from products where $key = ?', [value]);
+    Product product = Product();
+    if (productFind.isNotEmpty) {
+      product = Product.fromMap(productFind.first.fields);
+    }
+
+    conn.close();
+    return product;
+  }
+
+  //Deletar Produto:
+  Future<String> productDelete(String id) async {
+    try {
+      MySqlConnection conn = await db.connectToDatabase();
+      Results result = await conn.query('delete from products where id = ?', [id]);
+      conn.close();
+      if (result.affectedRows! > 0) {
+        return 'Deletado com sucesso!';
+      } else {
+        return 'Nenhum produto encontrado!';
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
 }

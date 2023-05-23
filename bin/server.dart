@@ -19,6 +19,9 @@ void main(List<String> args) async {
 
   //ProductController:
   _router.post("/registerproduct", productController.register);
+  _router.get("/listproducts", productController.getAllProducts);
+  _router.get("/product/<id>", productController.findProductById);
+  _router.delete("/deleteproduct/<id>", productController.deleteById);
 
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = "localhost";
