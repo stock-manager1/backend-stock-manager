@@ -28,6 +28,16 @@ class ProductService {
     return allProducts;
   }
 
+  Future<bool> updateProduct(String id, String key ,String value) async {
+    bool sucess = false;
+
+    if (key == "name" || key == "brand" || key == "type") {
+      sucess = await _productRepository.productUpdate(id, key, value);
+    }
+
+    return sucess;
+  }
+
   // Deletar produto:
   Future<String> productDelete(String id) async {
     try {

@@ -68,6 +68,22 @@ class ProductsRepository {
     return product;
   }
 
+  // Alterar Produto:
+  Future<bool> productUpdate(String id, String key ,String value) async {
+    Product product = await productFind("id", id);
+    bool sucess = false;
+
+    if (!product.isEmpty()) {
+      MySqlConnection conn = await db.connectToDatabase();
+      await conn.query("update products set $key = ? where id = ${product.id}", [value]);
+
+      conn.close();
+      sucess = true;
+    }
+
+    return sucess;
+  }
+
   //Deletar Produto:
   Future<String> productDelete(String id) async {
     try {

@@ -85,6 +85,38 @@ class ProductController {
     }
   }
 
+  // Alterar Produto:
+  Future<Response> updateProduct(Request request, String id, String key ,String value) async {
+    try {
+      bool update = await _productService.updateProduct(id, key, value);
+      if (update == true) {
+        return Response.ok(
+          jsonEncode({
+              'message': "$key alterado com Sucesso."
+            }),
+            headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+      } else {
+        return Response.ok(
+            jsonEncode({
+              'message': "$key não pode ser alterado ou não existe.",
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
+      }
+    } catch (e) {
+      return Response.internalServerError(
+          body: jsonEncode({
+            'message': e.toString(),
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    }
+  }
+
   // Deletar Produto:
   Future<Response> deleteById(Request req, String id) async {
     try {
