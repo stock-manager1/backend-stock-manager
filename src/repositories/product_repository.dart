@@ -32,7 +32,7 @@ class ProductsRepository {
     } on MySqlException catch (e, s) {
       print(e);
       print(s);
-      throw Exception('Produto já Cdastrado.');
+      throw Exception('Produto já Cadastrado.');
     } finally {
       await conn.close();
     }
@@ -69,13 +69,14 @@ class ProductsRepository {
   }
 
   // Alterar Produto:
-  Future<bool> productUpdate(String id, String key ,String value) async {
+  Future<bool> productUpdate(String id, String key, String value) async {
     Product product = await productFind("id", id);
     bool sucess = false;
 
     if (!product.isEmpty()) {
       MySqlConnection conn = await db.connectToDatabase();
-      await conn.query("update products set $key = ? where id = ${product.id}", [value]);
+      await conn.query(
+          "update products set $key = ? where id = ${product.id}", [value]);
 
       conn.close();
       sucess = true;
@@ -88,7 +89,8 @@ class ProductsRepository {
   Future<String> productDelete(String id) async {
     try {
       MySqlConnection conn = await db.connectToDatabase();
-      Results result = await conn.query('delete from products where id = ?', [id]);
+      Results result =
+          await conn.query('delete from products where id = ?', [id]);
       conn.close();
       if (result.affectedRows! > 0) {
         return 'Deletado com sucesso!';
@@ -99,5 +101,4 @@ class ProductsRepository {
       return e.toString();
     }
   }
-
 }
