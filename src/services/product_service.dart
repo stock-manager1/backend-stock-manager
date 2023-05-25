@@ -1,18 +1,15 @@
-
 import 'package:shelf/shelf.dart';
-
 
 import '../models/product.dart';
 import '../repositories/product_repository.dart';
 
 class ProductService {
-  
   final _productRepository = ProductsRepository();
 
   // Registrar Produto:
   Future<void> productRegister(Request request) async {
-      final productRq = Product.fromJson(await request.readAsString());
-      await _productRepository.productRegister(productRq);
+    final productRq = Product.fromJson(await request.readAsString());
+    await _productRepository.productRegister(productRq);
   }
 
   // Encontrar Produto:
@@ -24,11 +21,11 @@ class ProductService {
   // Listar Produtos:
   Future<List<Product>> listAllProducts() async {
     List<Product> allProducts = await _productRepository.listAllProducts();
-    
+
     return allProducts;
   }
 
-  Future<bool> updateProduct(String id, String key ,String value) async {
+  Future<bool> updateProduct(String id, String key, String value) async {
     bool sucess = false;
 
     if (key == "name" || key == "brand" || key == "type") {
@@ -46,5 +43,4 @@ class ProductService {
       return e.toString();
     }
   }
-
 }
