@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:mysql1/mysql1.dart';
-import 'package:test/test.dart';
 
 import '../../bin/core/database/database.dart';
 import '../models/user.dart';
@@ -55,7 +52,7 @@ class UserRepository {
   }
 
   // Encontrar Usuário:
-  Future<User> userFind(String key, String value) async {
+  Future<User> find(String key, String value) async {
     MySqlConnection conn = await db.connectToDatabase();
     Results userFind =
         await conn.query('select * from users where $key = ?', [value]);
@@ -63,19 +60,14 @@ class UserRepository {
     if (userFind.isNotEmpty) {
       user = User.fromMap(userFind.first.fields);
     }
-
-      conn.close();
-      return user;
-    } catch (e) {
-      print(e);
-      return User();
-    }
+    conn.close();
+    return user;
   }
 
   //Alterar Usuário:
   Future<bool> userUpdate(
       String id, String email, String key, String value) async {
-    User user = await userFind("id", id);
+    User user = await find("id", id);
     bool sucess = false;
 
     if (!user.isEmpty()) {
