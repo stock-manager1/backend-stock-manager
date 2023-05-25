@@ -8,16 +8,21 @@ class UserRepository {
   Database db = Database();
 
   Future<User> find(String key, String value) async {
-    MySqlConnection conn = await db.connectToDatabase();
-    Results userFind =
-        await conn.query('select * from users where $key = ?', [value]);
-    User user = User();
-    if (userFind.isNotEmpty) {
-      user = User.fromMap(userFind.first.fields);
-    }
+    try {
+      MySqlConnection conn = await db.connectToDatabase();
+      Results userFind =
+          await conn.query('select * from users where $key = ?', [value]);
+      User user = User();
+      if (userFind.isNotEmpty) {
+        user = User.fromMap(userFind.first.fields);
+      }
 
-    conn.close();
-    return user;
+      conn.close();
+      return user;
+    } catch (e) {
+      print(e);
+      return User();
+    }
   }
 
   Future<String> delete(String id) async {
