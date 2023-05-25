@@ -12,7 +12,7 @@ class UserController {
 
   Future<Response> findById(Request req, String id) async {
     try {
-      User user = await userService.userFind("id", id);
+      User user = await userService.find("id", id);
       if (!user.isEmpty()) {
         return Response.ok(
             jsonEncode({
