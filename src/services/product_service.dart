@@ -25,6 +25,7 @@ class ProductService {
     return allProducts;
   }
 
+  // Alterar Produto:
   Future<bool> updateProduct(String id, String key, String value) async {
     bool sucess = false;
 

@@ -4,14 +4,14 @@ import 'dart:convert';
 class Deposit {
   final int id;
   final int capacity;
-  final int qntInventory;
+  final int amount;
   final String address;
   final String name;
   
   Deposit({
     this.id = 0,
     this.capacity = 0,
-    this.qntInventory = 0,
+    this.amount = 0,
     this.address = '',
     this.name = '',
   });
@@ -19,24 +19,32 @@ class Deposit {
   Deposit copyWith({
     int? id,
     int? capacity,
-    int? qntInventory,
+    int? amount,
     String? address,
     String? name,
   }) {
     return Deposit(
       id: id ?? this.id,
       capacity: capacity ?? this.capacity,
-      qntInventory: qntInventory ?? this.qntInventory,
+      amount: amount ?? this.amount,
       address: address ?? this.address,
       name: name ?? this.name,
     );
+  }
+
+  bool isEmpty() {
+    if (name.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'capacity': capacity,
-      'qntInventory': qntInventory,
+      'amount': amount,
       'address': address,
       'name': name,
     };
@@ -46,9 +54,9 @@ class Deposit {
     return Deposit(
       id: (map['id'] ?? 0) as int,
       capacity: (map['capacity'] ?? 0) as int,
-      qntInventory: (map['qntInventory'] ?? 0) as int,
-      address: (map['address'] ?? '') as String,
-      name: (map['name'] ?? '') as String,
+      amount: (0),
+      address: (map['address'] ?? '').toString(),
+      name: (map['name'] ?? '').toString(),
     );
   }
 
@@ -59,7 +67,7 @@ class Deposit {
 
   @override
   String toString() {
-    return 'Depository(id: $id, capacity: $capacity, qntInventory: $qntInventory, address: $address, name: $name)';
+    return 'Depository(id: $id, capacity: $capacity, amount: $amount, address: $address, name: $name)';
   }
 
   @override
@@ -68,7 +76,7 @@ class Deposit {
 
     return other.id == id &&
         other.capacity == capacity &&
-        other.qntInventory == qntInventory &&
+        other.amount == amount &&
         other.address == address &&
         other.name == name;
   }
@@ -77,7 +85,7 @@ class Deposit {
   int get hashCode {
     return id.hashCode ^
         capacity.hashCode ^
-        qntInventory.hashCode ^
+        amount.hashCode ^
         address.hashCode ^
         name.hashCode;
   }
