@@ -8,29 +8,15 @@ class UserRepository {
 
   // Registrar Usuário:
   Future<void> userRegister(User user) async {
-    MySqlConnection conn = await db.connectToDatabase();
     try {
-      final isUserRegistered = await conn.query('''
-        select * from users 
-        where id = ?
-        and name = ?
-        and email = ?
-        ''', [user.id, user.name, user.email]);
-
-      if (isUserRegistered.isEmpty) {
-        await conn.query('''
-          insert into users
-          values (?,?,?,?)
-          ''', [null, user.id, user.name, user.email]);
-      } else {
-        print('Usuário já cadastrado');
-      }
-    } on MySqlException catch (e, s) {
-      print(e);
-      print(s);
-      throw Exception('Usuário já Cadastrado.');
-    } finally {
-      await conn.close();
+      MySqlConnection conn = await db.connectToDatabase();
+      await conn.query('''
+      INSERT INTO users (email, password, name)
+      VALUES (?, ?, ?)
+    ''', [user.email, user.password, user.name]);
+      conn.close();
+    } catch (e) {
+      throw Exception("Erro no servidor");
     }
   }
 

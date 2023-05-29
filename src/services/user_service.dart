@@ -34,4 +34,18 @@ class UserService {
     final token = JwtAuth.generateJwtToken(user.id);
     return token;
   }
+
+  Future<void> register(String email, String password, String name) async {
+    User user = await userRepository.find("email", email);
+    if (!user.isEmpty()) {
+      throw Exception("Usuário já cadastrado!");
+    }
+
+    User userRegister = User(
+        email: email,
+        name: name,
+        password: PasswordBcrypt.hashPassword(password));
+
+    userRepository.userRegister(userRegister);
+  }
 }

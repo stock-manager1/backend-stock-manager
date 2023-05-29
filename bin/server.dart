@@ -21,19 +21,22 @@ void main(List<String> args) async {
   _router.get("/user/<id>", _userController.findById);
   _router.delete("/user/<id>", _userController.deleteById);
   _router.post("/user/login", _userController.login);
+  _router.post("/user/register", _userController.register);
 
   //ProductCrud:
   _router.post("/registerproduct", _productController.register);
   _router.get("/listproducts", _productController.getAllProducts);
   _router.get("/product/<id>", _productController.findProductById);
-  _router.put("/updateproduct/<id>/<key>/<value>", _productController.updateProduct);
+  _router.put(
+      "/updateproduct/<id>/<key>/<value>", _productController.updateProduct);
   _router.delete("/deleteproduct/<id>", _productController.deleteById);
 
   //DepositCrud:
   _router.post("/registerdeposit", _depositController.register);
   _router.get("/listdeposits", _depositController.getAllDeposits);
   _router.get("/deposit/<id>", _depositController.findDepositById);
-  _router.put("/updatedeposit/<id>/<key>/<value>", _depositController.updateDeposit);
+  _router.put(
+      "/updatedeposit/<id>/<key>/<value>", _depositController.updateDeposit);
   _router.delete("/deletedeposit/<id>", _depositController.deleteById);
 
   // Use any available host or container IP (usually `0.0.0.0`).

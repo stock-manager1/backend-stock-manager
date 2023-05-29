@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 
 import '../dto/login_request.dart';
+import '../dto/register_request.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 
@@ -71,6 +72,39 @@ class UserController {
       return Response.ok(
           jsonEncode({
             'token': token,
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    } on Exception catch (e) {
+      return Response.notFound(
+          jsonEncode({
+            'message': '$e',
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    } catch (e) {
+      return Response.internalServerError(
+          body: jsonEncode({
+            'message': 'Erro interno no servidor',
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    }
+  }
+
+  Future<Response> register(Request req) async {
+    try {
+      final String body = await req.readAsString();
+      final Map<String, dynamic> registerData = jsonDecode(body);
+      final RegisterRequest register = RegisterRequest.fromMap(registerData);
+      await userService.register(
+          register.email, register.password, register.name);
+      return Response.ok(
+          jsonEncode({
+            'message': "Cadastro com Sucesso!",
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
