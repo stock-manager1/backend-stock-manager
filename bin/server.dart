@@ -4,6 +4,7 @@ import 'package:dotenv/dotenv.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
 import '../src/controller/deposit_controllar.dart';
 import '../src/controller/products_controller.dart';
@@ -42,8 +43,15 @@ void main(List<String> args) async {
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = "localhost";
   // Configure a pipeline that logs requests.
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(_router);
-
+  final overrideHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+  };
+  final handler = Pipeline()
+      .addMiddleware(corsHeaders(headers: overrideHeaders))
+      .addHandler(_router);
+  //logRequests()
   // For running in containers, we respect the PORT environment variable.
   final port =
       int.parse(Platform.environment['PORT'] ?? env["SERVER_PORT"].toString());
