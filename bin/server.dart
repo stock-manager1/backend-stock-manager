@@ -49,6 +49,7 @@ void main(List<String> args) async {
     'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
   };
   final handler = Pipeline()
+      .addMiddleware(logRequests())
       .addMiddleware(corsHeaders(headers: overrideHeaders))
       .addHandler(_router);
   //logRequests()
