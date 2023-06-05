@@ -41,7 +41,7 @@ void main(List<String> args) async {
   _router.delete("/deletedeposit/<id>", _depositController.deleteById);
 
   // Use any available host or container IP (usually `0.0.0.0`).
-  final ip = "localhost";
+  final ip = env['IP'].toString();
   // Configure a pipeline that logs requests.
   final overrideHeaders = {
     'Access-Control-Allow-Origin': '*',

@@ -5,7 +5,6 @@ import 'package:shelf/shelf.dart';
 
 import '../dto/login_request.dart';
 import '../dto/register_request.dart';
-import '../models/product.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 
@@ -117,8 +116,7 @@ class UserController {
       final List<User> listUser = await userService.listAllUser();
 
       return Response.ok(
-          jsonEncode(
-              {'users': listUser.map((Product) => Product.toMap()).toList()}),
+          jsonEncode({'users': listUser.map((user) => user.toMap()).toList()}),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
           });
