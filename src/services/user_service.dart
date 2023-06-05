@@ -6,19 +6,22 @@ import '../util/password_bcrypt.dart';
 class UserService {
   UserRepository userRepository = UserRepository();
 
-  Future<User> find(String key, String value) async {
-    User user = await userRepository.find(key, value);
-    return user;
-  }
-
-  Future<String> delete(String id) async {
-    try {
-      return await userRepository.delete(id);
-    } catch (e) {
-      return e.toString();
+  //Registrar Usuário:
+  Future<void> register(String email, String password, String name) async {
+    User user = await userRepository.find("email", email);
+    if (!user.isEmpty()) {
+      throw Exception("Usuário já cadastrado!");
     }
+
+    User userRegister = User(
+        email: email,
+        name: name,
+        password: PasswordBcrypt.hashPassword(password));
+
+    userRepository.userRegister(userRegister);
   }
 
+  //Login Usuário:
   Future<String> login(String email, String password) async {
     User user = await userRepository.find("email", email);
     if (user.isEmpty()) {
@@ -35,17 +38,37 @@ class UserService {
     return token;
   }
 
-  Future<void> register(String email, String password, String name) async {
-    User user = await userRepository.find("email", email);
-    if (!user.isEmpty()) {
-      throw Exception("Usuário já cadastrado!");
+  //Encontrar Usuário:
+  Future<User> find(String key, String value) async {
+    User user = await userRepository.find(key, value);
+    return user;
+  }
+
+  //Listar Usuario:
+  Future<List<User>> listAllUser() async {
+    List<User> allUsers = await userRepository.listAllUser();
+
+    return allUsers;
+  }
+
+  //Alterar Usuário:
+  Future<bool> updateUser(
+      String id, String email, String key, String value) async {
+    bool sucess = false;
+
+    if (key == "name" || key == "brand" || key == "type") {
+      sucess = await userRepository.userUpdate(id, email, key, value);
     }
 
-    User userRegister = User(
-        email: email,
-        name: name,
-        password: PasswordBcrypt.hashPassword(password));
+    return sucess;
+  }
 
-    userRepository.userRegister(userRegister);
+  //Deletar Usuário:
+  Future<String> delete(String id) async {
+    try {
+      return await userRepository.delete(id);
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

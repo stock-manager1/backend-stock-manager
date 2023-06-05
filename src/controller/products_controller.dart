@@ -12,26 +12,27 @@ class ProductController {
 
   // Registrar Protudo:
   Future<Response> register(Request request) async {
-      try {
-       await _productService.productRegister(request);
-       return Response.ok(jsonEncode({
-              'message': "Produto registrado com sucesso!",
-            }),
-            headers: {
-              HttpHeaders.contentTypeHeader: 'application/json',
-            });
-      } catch (e) {
-        return Response.internalServerError(
+    try {
+      await _productService.productRegister(request);
+      return Response.ok(
+          jsonEncode({
+            'message': "Produto registrado com sucesso!",
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    } catch (e) {
+      return Response.internalServerError(
           body: jsonEncode({
             'error': 'Produto já cadastrado.',
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
           });
-      }
+    }
   }
 
-  // Encontrar Produto;
+  // Encontrar Produto:
   Future<Response> findProductById(Request req, String id) async {
     try {
       Product product = await _productService.productFind("id", id);
@@ -66,12 +67,14 @@ class ProductController {
   // Listar Produtos:
   Future<Response> getAllProducts(Request request) async {
     try {
-      final List<Product> listProducts = await _productService.listAllProducts();
+      final List<Product> listProducts =
+          await _productService.listAllProducts();
 
       return Response.ok(
-        jsonEncode({
-          'products': listProducts.map((product) => product.toMap()).toList()
-          }), headers: {
+          jsonEncode({
+            'products': listProducts.map((product) => product.toMap()).toList()
+          }),
+          headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
           });
     } catch (e) {
@@ -86,17 +89,16 @@ class ProductController {
   }
 
   // Alterar Produto:
-  Future<Response> updateProduct(Request request, String id, String key ,String value) async {
+  Future<Response> updateProduct(
+      Request request, String id, String key, String value) async {
     try {
       bool update = await _productService.updateProduct(id, key, value);
       if (update == true) {
         return Response.ok(
-          jsonEncode({
-              'message': "$key alterado com Sucesso."
-            }),
+            jsonEncode({'message': "$key alterado com Sucesso."}),
             headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          });
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
       } else {
         return Response.ok(
             jsonEncode({

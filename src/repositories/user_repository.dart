@@ -21,8 +21,7 @@ class UserRepository {
   }
 
   // Listar Usuário:
-
-  Future<List<User>> listAllUserr() async {
+  Future<List<User>> listAllUser() async {
     MySqlConnection conn = await db.connectToDatabase();
     Results users = await conn.query('select * from users');
 
