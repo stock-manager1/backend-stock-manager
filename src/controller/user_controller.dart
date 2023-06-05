@@ -79,7 +79,7 @@ class UserController {
   }
 
   //Encontrar Usuário:
-  Future<Response> findById(Request req, String id) async {
+  Future<Response> findUserById(Request req, String id) async {
     try {
       User user = await userService.find("id", id);
       if (!user.isEmpty()) {

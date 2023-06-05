@@ -18,14 +18,17 @@ final _depositController = DepositController();
 
 void main(List<String> args) async {
   DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
+
   //UserCrud:
-  _router.get("/user/<id>", _userController.findById);
-  _router.delete("/user/<id>", _userController.deleteById);
+  _router.post("/registeruser", _userController.register);
   _router.post("/user/login", _userController.login);
-  _router.post("/user/register", _userController.register);
+  _router.get("/listusers", _userController.getAllUser);
+  _router.get("/user/<id>", _userController.findUserById);
+  _router.put("/updateuser/<id>/<key>/<value>", _userController.updateUser);
+  _router.delete("/deleteuser/<id>", _userController.deleteById);
 
   //ProductCrud:
-  _router.post("/registerproduct/<deposit>/<amount>", _productController.register);
+  _router.post("/registerproduct", _productController.register);
   _router.get("/listproducts", _productController.getAllProducts);
   _router.get("/product/<id>", _productController.findProductById);
   _router.put(
@@ -41,7 +44,7 @@ void main(List<String> args) async {
   _router.delete("/deletedeposit/<id>", _depositController.deleteById);
 
   // Use any available host or container IP (usually `0.0.0.0`).
-  final ip = env['IP'].toString();
+  final ip = "localhost";
   // Configure a pipeline that logs requests.
   final overrideHeaders = {
     'Access-Control-Allow-Origin': '*',
