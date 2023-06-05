@@ -12,10 +12,11 @@ class DepositController {
 
   // Registrar Deposito:
   Future<Response> register(Request request) async {
+
       try {
-       await _depositService.depositRegister(request);
-       return Response.ok(jsonEncode({
-              'message': "Deposito registrado com sucesso!",
+        var message = await _depositService.depositRegister(request);
+        return Response.ok(jsonEncode({
+              'message': message,
             }),
             headers: {
               HttpHeaders.contentTypeHeader: 'application/json',

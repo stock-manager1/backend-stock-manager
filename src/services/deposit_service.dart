@@ -8,9 +8,11 @@ class DepositService {
   final _depositRepository = DepositRepository();
 
   // Registrar Deposito:
-  Future<void> depositRegister(Request request) async {
+  Future<bool> depositRegister(Request request) async {
     final depositRq = Deposit.fromJson(await request.readAsString());
     await _depositRepository.depositRegister(depositRq);
+
+    return true;
   }
 
   // Listar Depositos:

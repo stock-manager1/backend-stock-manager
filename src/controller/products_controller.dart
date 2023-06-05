@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:shelf/shelf.dart';
 
+import '../dto/produtc_dto.dart';
 import '../models/product.dart';
 import '../services/product_service.dart';
 
@@ -11,20 +12,30 @@ class ProductController {
   final _productService = ProductService();
 
   // Registrar Protudo:
-  Future<Response> register(Request request) async {
+  Future<Response> register(Request product) async {
     try {
-      await _productService.productRegister(request);
-      return Response.ok(
-          jsonEncode({
-            'message': "Produto registrado com sucesso!",
-          }),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          });
+      bool request = await _productService.productRegister(product);
+      if (request == true) {
+        return Response.ok(
+            jsonEncode({
+              'message': "Produto Cadastrado.",
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
+      } else {
+        return Response.ok(
+            jsonEncode({
+              'message': "Produto já existe",
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
+      }
     } catch (e) {
       return Response.internalServerError(
           body: jsonEncode({
-            'error': 'Produto já cadastrado.',
+            'error': e.toString(),
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -56,7 +67,7 @@ class ProductController {
     } catch (e) {
       return Response.internalServerError(
           body: jsonEncode({
-            'message': 'Erro interno no servidor',
+            'message': e.toString(),
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -67,7 +78,7 @@ class ProductController {
   // Listar Produtos:
   Future<Response> getAllProducts(Request request) async {
     try {
-      final List<Product> listProducts =
+      final List<CustomProductResponse> listProducts =
           await _productService.listAllProducts();
 
       return Response.ok(
@@ -122,18 +133,28 @@ class ProductController {
   // Deletar Produto:
   Future<Response> deleteById(Request req, String id) async {
     try {
-      String message = await _productService.productDelete(id);
-      return Response.ok(
-          jsonEncode({
-            'message': message,
-          }),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          });
+      bool delete = await _productService.productDelete(id);
+      if (delete == true) {
+        return Response.ok(
+            jsonEncode({
+              'message': "Produto Deletado com Sucesso.",
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
+      } else {
+        return Response.ok(
+            jsonEncode({
+              'message': "Produto não existe.",
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
+      }
     } catch (e) {
       return Response.internalServerError(
           body: jsonEncode({
-            'message': 'Erro interno no servidor',
+            'message': e.toString(),
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',

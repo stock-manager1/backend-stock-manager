@@ -25,7 +25,7 @@ void main(List<String> args) async {
   _router.post("/user/register", _userController.register);
 
   //ProductCrud:
-  _router.post("/registerproduct", _productController.register);
+  _router.post("/registerproduct/<deposit>/<amount>", _productController.register);
   _router.get("/listproducts", _productController.getAllProducts);
   _router.get("/product/<id>", _productController.findProductById);
   _router.put(

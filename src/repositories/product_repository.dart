@@ -3,39 +3,33 @@ import 'dart:async';
 import 'package:mysql1/mysql1.dart';
 
 import '../../bin/core/database/database.dart';
-import '../../bin/core/exceptions/Product_Already_Registered.dart';
 import '../models/product.dart';
 
 class ProductsRepository {
   Database db = Database();
 
   //Registrar Produtos:
-  Future<void> productRegister(Product product) async {
+  Future<bool> productRegister(Product product) async {
     MySqlConnection conn = await db.connectToDatabase();
+    var sucess = false;
 
-    try {
-      final isProductRegistered = await conn.query('''
+    final isProductRegistered = await conn.query('''
         select * from products 
         where name = ?
         and brand = ?
         and type = ?
         ''', [product.name, product.brand, product.type]);
 
-      if (isProductRegistered.isEmpty) {
-        await conn.query('''
+    if (isProductRegistered.isEmpty) {
+      await conn.query('''
           insert into products
           values (?,?,?,?)
           ''', [null, product.name, product.brand, product.type]);
-      } else {
-        throw ProductAlreadyRegistered();
-      }
-    } on MySqlException catch (e, s) {
-      print(e);
-      print(s);
-      throw Exception('Produto já Cadastrado.');
-    } finally {
-      await conn.close();
+      sucess = true;
     }
+
+    await conn.close();
+    return sucess;
   }
 
   // Listar Produto:
@@ -57,6 +51,7 @@ class ProductsRepository {
   // Encontrar Produto:
   Future<Product> productFind(String key, String value) async {
     MySqlConnection conn = await db.connectToDatabase();
+
     Results productFind =
         await conn.query('select * from products where $key = ?', [value]);
     Product product = Product();
@@ -69,36 +64,18 @@ class ProductsRepository {
   }
 
   // Alterar Produto:
-  Future<bool> productUpdate(String id, String key, String value) async {
-    Product product = await productFind("id", id);
-    bool sucess = false;
+  Future<void> productUpdate(int id, String key, String value) async {
+    MySqlConnection conn = await db.connectToDatabase();
+    await conn.query("update products set $key = ? where id = $id", [value]);
 
-    if (!product.isEmpty()) {
-      MySqlConnection conn = await db.connectToDatabase();
-      await conn.query(
-          "update products set $key = ? where id = ${product.id}", [value]);
-
-      conn.close();
-      sucess = true;
-    }
-
-    return sucess;
+    conn.close();
   }
 
   //Deletar Produto:
-  Future<String> productDelete(String id) async {
-    try {
-      MySqlConnection conn = await db.connectToDatabase();
-      Results result =
-          await conn.query('delete from products where id = ?', [id]);
-      conn.close();
-      if (result.affectedRows! > 0) {
-        return 'Deletado com sucesso!';
-      } else {
-        return 'Nenhum produto encontrado!';
-      }
-    } catch (e) {
-      return e.toString();
-    }
+  Future<void> productDelete(String id) async {
+    MySqlConnection conn = await db.connectToDatabase();
+    await conn.query('delete from products where id = ?', [id]);
+    
+    conn.close();
   }
 }
