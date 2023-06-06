@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:mysql1/mysql1.dart';
 import '../../bin/core/database/database.dart';
 import '../models/product.dart';

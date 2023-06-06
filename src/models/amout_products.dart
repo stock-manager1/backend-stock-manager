@@ -1,21 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'deposit.dart';
-import 'product.dart';
-
 class AmountProduct {
   final int idDeposit;
   final int idProduct;
   final int amount;
-  
+
   AmountProduct({
     required this.idDeposit,
     required this.idProduct,
     required this.amount,
   });
-
-  
 
   AmountProduct copyWith({
     int? idDeposit,
@@ -47,19 +42,20 @@ class AmountProduct {
 
   String toJson() => json.encode(toMap());
 
-  factory AmountProduct.fromJson(String source) => AmountProduct.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AmountProduct.fromJson(String source) =>
+      AmountProduct.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'AmountProduct(idDeposit: $idDeposit, idProduct: $idProduct, amount: $amount)';
+  String toString() =>
+      'AmountProduct(idDeposit: $idDeposit, idProduct: $idProduct, amount: $amount)';
 
   @override
   bool operator ==(covariant AmountProduct other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.idDeposit == idDeposit &&
-      other.idProduct == idProduct &&
-      other.amount == amount;
+
+    return other.idDeposit == idDeposit &&
+        other.idProduct == idProduct &&
+        other.amount == amount;
   }
 
   @override
