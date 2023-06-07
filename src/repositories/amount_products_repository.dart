@@ -7,13 +7,13 @@ class AmountProductRepository {
   Database db = Database();
 
   // Registrar Quantidade de Produtos
-  Future<void> register(String productId, String depositId, String amount) async {
+  Future<void> register(int id, int amount) async {
     MySqlConnection conn = await db.connectToDatabase();
 
     await conn.query('''
           insert into amount_product
           values (?,?,?)
-          ''', [productId, depositId, amount]);
+          ''', [1, id, amount]);
 
     conn.close();
   }

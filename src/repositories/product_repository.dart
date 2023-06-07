@@ -3,33 +3,40 @@ import 'dart:async';
 import 'package:mysql1/mysql1.dart';
 
 import '../../bin/core/database/database.dart';
+import '../dto/produtc_dto.dart';
 import '../models/product.dart';
 
 class ProductsRepository {
   Database db = Database();
 
-  //Registrar Produtos:
-  Future<bool> productRegister(Product product) async {
+  // Registrar Produtos:
+  Future<Product> productRegister(CustomProductResponse product) async {
     MySqlConnection conn = await db.connectToDatabase();
-    var sucess = false;
 
-    final isProductRegistered = await conn.query('''
+    await conn.query('''
+      insert into products values (?,?,?,?);
+      ''', [null, product.name, product.brand, product.type]);
+
+    final result = await conn.query('''
+      select * from products where id = last_insert_id();
+    ''');
+    final finalProduct = Product.fromMap(result.first.fields);
+    
+    await conn.close();
+    return finalProduct;
+  }
+
+  Future<Results> productAlreadyExist(CustomProductResponse product) async {
+    MySqlConnection conn = await db.connectToDatabase();
+
+    final result = await conn.query('''
         select * from products 
         where name = ?
         and brand = ?
         and type = ?
         ''', [product.name, product.brand, product.type]);
 
-    if (isProductRegistered.isEmpty) {
-      await conn.query('''
-          insert into products
-          values (?,?,?,?)
-          ''', [null, product.name, product.brand, product.type]);
-      sucess = true;
-    }
-
-    await conn.close();
-    return sucess;
+    return result;
   }
 
   // Listar Produto:
@@ -75,7 +82,7 @@ class ProductsRepository {
   Future<void> productDelete(String id) async {
     MySqlConnection conn = await db.connectToDatabase();
     await conn.query('delete from products where id = ?', [id]);
-    
+
     conn.close();
   }
 }

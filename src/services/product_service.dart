@@ -1,3 +1,4 @@
+import 'package:mysql1/mysql1.dart';
 import 'package:shelf/shelf.dart';
 
 import '../dto/custom_product_names_deposit_response.dart';
@@ -16,10 +17,17 @@ class ProductService {
 
   // Registrar Produto:
   Future<bool> productRegister(Request product) async {
-    final productRq = Product.fromJson(await product.readAsString());
-    bool productSucess = await _productRepository.productRegister(productRq);
+    bool registerSucess = false;
+    final productRq = CustomProductResponse.fromJson(await product.readAsString());
+    Results result = await _productRepository.productAlreadyExist(productRq);
 
-    return productSucess;
+    if (result.isEmpty) {
+      registerSucess = true;
+      final product = await _productRepository.productRegister(productRq);
+      await _amountRepository.register(product.id, productRq.amount);
+    }
+
+    return registerSucess;
   }
 
   // Encontrar Produto:
@@ -57,7 +65,7 @@ class ProductService {
         amount += list.amount;
       }
       CustomProductResponse custom = CustomProductResponse(
-          amount, product.id, product.name, product.brand, product.type);
+          product.id, product.name, product.brand, product.type, amount);
       productResponse.add(custom);
     }
 
