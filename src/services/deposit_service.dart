@@ -1,6 +1,6 @@
-
 import 'package:shelf/shelf.dart';
 
+import '../dto/deposit_register_request.dart';
 import '../models/deposit.dart';
 import '../repositories/deposit_repository.dart';
 
@@ -8,11 +8,16 @@ class DepositService {
   final _depositRepository = DepositRepository();
 
   // Registrar Deposito:
-  Future<bool> depositRegister(Request request) async {
-    final depositRq = Deposit.fromJson(await request.readAsString());
-    await _depositRepository.depositRegister(depositRq);
+  Future<String> depositRegister(Request request) async {
+    try {
+      final depositRq =
+          DepositRegisterRequest.fromJson(await request.readAsString());
+      await _depositRepository.depositRegister(depositRq);
 
-    return true;
+      return "Deposito criado";
+    } catch (e) {
+      return "Erro no serviço";
+    }
   }
 
   // Listar Depositos:
@@ -32,7 +37,10 @@ class DepositService {
   Future<bool> updateDeposit(String id, String key, String value) async {
     bool sucess = false;
 
-    if (key == "capacity" || key == "amount" || key == "address" || key == 'name') {
+    if (key == "capacity" ||
+        key == "amount" ||
+        key == "address" ||
+        key == 'name') {
       sucess = await _depositRepository.depositUpdate(id, key, value);
     }
 

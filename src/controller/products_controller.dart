@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:shelf/shelf.dart';
 
-import '../dto/produtc_dto.dart';
-import '../models/product.dart';
+import '../dto/custom_product_names_deposit_response.dart';
+import '../dto/custom_product_response.dart';
 import '../services/product_service.dart';
 
 class ProductController {
@@ -46,7 +46,8 @@ class ProductController {
   // Encontrar Produto:
   Future<Response> findProductById(Request req, String id) async {
     try {
-      Product product = await _productService.productFind("id", id);
+      CustomProductNamesDespositResponse product =
+          await _productService.productFind("id", id);
       if (!product.isEmpty()) {
         return Response.ok(
             jsonEncode({

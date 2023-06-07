@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -12,35 +11,38 @@ class DepositController {
 
   // Registrar Deposito:
   Future<Response> register(Request request) async {
-
-      try {
-        var message = await _depositService.depositRegister(request);
-        return Response.ok(jsonEncode({
-              'message': message,
-            }),
-            headers: {
-              HttpHeaders.contentTypeHeader: 'application/json',
-            });
-      } catch (e) {
-        return Response.internalServerError(
+    try {
+      String message = await _depositService.depositRegister(request);
+      return Response.ok(
+          jsonEncode({
+            'message': message,
+          }),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+    } catch (e) {
+      return Response.internalServerError(
           body: jsonEncode({
             'error': e,
           }),
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
           });
-      }
+    }
   }
 
   // Listar Deposits:
   Future<Response> getAllDeposits(Request request) async {
     try {
-      final List<Deposit> listAllDeposits = await _depositService.listAllDeposits();
+      final List<Deposit> listAllDeposits =
+          await _depositService.listAllDeposits();
 
       return Response.ok(
-        jsonEncode({
-          'deposits': listAllDeposits.map((deposit) => deposit.toMap()).toList()
-          }), headers: {
+          jsonEncode({
+            'deposits':
+                listAllDeposits.map((deposit) => deposit.toMap()).toList()
+          }),
+          headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
           });
     } catch (e) {
@@ -88,17 +90,16 @@ class DepositController {
   }
 
   // Alterar Deposito:
-  Future<Response> updateDeposit(Request request, String id, String key ,String value) async {
+  Future<Response> updateDeposit(
+      Request request, String id, String key, String value) async {
     try {
       bool update = await _depositService.updateDeposit(id, key, value);
       if (update == true) {
         return Response.ok(
-          jsonEncode({
-              'message': "$key alterado com Sucesso."
-            }),
+            jsonEncode({'message': "$key alterado com Sucesso."}),
             headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          });
+              HttpHeaders.contentTypeHeader: 'application/json',
+            });
       } else {
         return Response.ok(
             jsonEncode({

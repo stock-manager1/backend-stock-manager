@@ -1,32 +1,26 @@
-
 import 'package:mysql1/mysql1.dart';
 
 import '../../bin/core/database/database.dart';
+import '../dto/deposit_register_request.dart';
 import '../models/deposit.dart';
 
 class DepositRepository {
   Database db = Database();
 
   //Registrar Deposito:
-  Future<void> depositRegister(Deposit deposit) async {
+  Future<void> depositRegister(DepositRegisterRequest deposit) async {
     MySqlConnection conn = await db.connectToDatabase();
 
     try {
-      final depositRegistered = await conn.query('select * from deposit where id = ${deposit.id}');
-
-      if (depositRegistered.isEmpty) {
-        await conn.query('''
-          insert into deposit
-          values (?,?,?,?,?)
-          ''', [deposit.id, deposit.capacity, deposit.amount, deposit.address, deposit.name]);
-      } else {
-        throw Exception();
-      }
+      await conn.query('''
+          insert into deposit (capacity, amount, address, name)
+          values (?,?,?,?)
+          ''',
+          [deposit.capacity, deposit.amount, deposit.address, deposit.name]);
     } on MySqlException catch (e, s) {
       print(e);
       print(s);
       throw Exception('Deposito já Cadastrado.');
-
     } finally {
       await conn.close();
     }
@@ -51,7 +45,8 @@ class DepositRepository {
   // Encontrar Deposito:
   Future<Deposit> depositFind(String key, String value) async {
     MySqlConnection conn = await db.connectToDatabase();
-    Results depositFind = await conn.query('select * from deposit where $key = ?', [value]);
+    Results depositFind =
+        await conn.query('select * from deposit where $key = ?', [value]);
     Deposit deposit = Deposit();
 
     if (depositFind.isNotEmpty) {

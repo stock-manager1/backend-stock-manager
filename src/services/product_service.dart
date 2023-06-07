@@ -1,14 +1,18 @@
 import 'package:shelf/shelf.dart';
 
-import '../dto/produtc_dto.dart';
+import '../dto/custom_product_names_deposit_response.dart';
+import '../dto/custom_product_response.dart';
 import '../models/amout_products.dart';
+import '../models/deposit.dart';
 import '../models/product.dart';
 import '../repositories/amount_products_repository.dart';
+import '../repositories/deposit_repository.dart';
 import '../repositories/product_repository.dart';
 
 class ProductService {
   final _productRepository = ProductsRepository();
   final _amountRepository = AmountProductRepository();
+  final _depositRepository = DepositRepository();
 
   // Registrar Produto:
   Future<bool> productRegister(Request product) async {
@@ -19,9 +23,24 @@ class ProductService {
   }
 
   // Encontrar Produto:
-  Future<Product> productFind(String key, String value) async {
+  Future<CustomProductNamesDespositResponse> productFind(
+      String key, String value) async {
     Product product = await _productRepository.productFind(key, value);
-    return product;
+
+    List<AmountProduct> listAmount =
+        await _amountRepository.listById(product.id);
+
+    List<DepositProduct> depositos = List.empty(growable: true);
+    for (AmountProduct amount in listAmount) {
+      Deposit deposit = await _depositRepository.depositFind(
+          "id", amount.idDeposit.toString());
+      depositos.add(DepositProduct(name: deposit.name, amount: amount.amount));
+    }
+    CustomProductNamesDespositResponse productResponse =
+        CustomProductNamesDespositResponse(
+            product.id, product.name, product.brand, product.type, depositos);
+
+    return productResponse;
   }
 
   // Listar Produtos:

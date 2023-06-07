@@ -34,8 +34,8 @@ class AmountProduct {
 
   factory AmountProduct.fromMap(Map<String, dynamic> map) {
     return AmountProduct(
-      idDeposit: map['idDeposit'] as int,
-      idProduct: map['idProduct'] as int,
+      idDeposit: map['id_deposit'] as int,
+      idProduct: map['id_product'] as int,
       amount: map['amount'] as int,
     );
   }
