@@ -93,7 +93,9 @@ class ProductService {
     Product product = await productFind("id", id);
 
     if (!product.isEmpty()) {
+      await _amountRepository.productDelete(id);
       await _productRepository.productDelete(id);
+      
       sucess = true;
     }
 

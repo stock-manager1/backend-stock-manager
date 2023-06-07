@@ -18,6 +18,13 @@ class AmountProductRepository {
     conn.close();
   }
 
+  //Deletar Produto:
+  Future<void> productDelete(String id) async {
+    MySqlConnection conn = await db.connectToDatabase();
+    await conn.query('delete from amount_product where id_product = ?', [id]);
+
+    conn.close();
+  }
   // Listar Quantidade de Produtos por id
   Future<List<AmountProduct>> listById(int productId) async {
     MySqlConnection conn = await db.connectToDatabase();
